@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel ="stylesheet" href="style.css">
+    <title>Web 01 - Rudolf Rydl</title>
+     <style type="text/tailwindcss">
+      @theme {
+        --color-myPrimaryColor: #f96d00;
+      }
+
+    @layer base {
+        h2 {
+            @apply text-2xl mt-4
+        }
+        
+
+
+        nav a {
+            @apply 
+                block
+                bg-teal-700
+                text-white
+                rounded-md
+                py-2
+                px-3
+                text-center
+                no-underline
+                whitespace-nowrap
+                hover:bg-teal-500
+        }
+
+    }
+
+nav ul{
+
+}
+
+    </style>
+</head>
+<body class="bg-teal-950 text-white">
+    <div class="page-wrapper w-[95%] mx-auto lg:w-[80%]">
+            <header class="bg-myPrimaryColor px-4 py-4 text-center">
+                <h1 class="text-4xl">WA 2026 - První Web </h1>
+            </header>
+            <nav>
+                <ul>
+                    <li><a href="#">Domů</a></li>
+                    <li><a href="#">O nás</a></li>
+                    <li><a href="#">Kontakt</a></li>
+                    <li><a href="https://github.com/dashboard">github</a></li>
+                </ul>
+
+            </nav>
+            <main>
+                <section class="grid container">
+                    <article class="card">
+                        <h2>Titulek článku 1</h2>
+                        <p><strong>
+                            ssssssssssssssssssssssssssssssssssssssssssssss
+                        </strong></p>
+                    </article>
+                    <article class="card">
+                        <h2>Titulek článku 2</h2>
+                        <p><i>ssssssssssssssssssssssssssssssssssssssssssssssss
+                            ssssssssssssssssssssssssssssssssssssssssssssss</i></p>
+                    </article>
+                    <article class="card">
+                        <h2>Titulek článku 3</h2>
+                        <p><em>ssssssssssssssssssssssssssssssssssssssssssssssss
+                            ssssssssssssssssssssssssssssssssssssssssssssss</em></p>
+                    </article>
+                    <article class="card">
+                        <h2>Titulek článku 4</h2>
+                        <p>ssssssssssssssssssssssssssssssssssssssssssssssss
+                            ssssssssssssssssssssssssssssssssssssssssssssss</p>
+                    </article>
+                </section>
+            </main>
+
+
+
+
+            <footer class="bg-myPrimaryColor px-4 py-4 text-center">
+                <p>&copy; WA&nbsp;2026 - Rudolf Rýdl</p>
+            </footer>
+    </div>
+</body>
+</html>
