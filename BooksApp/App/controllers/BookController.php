@@ -5,7 +5,7 @@ require_once '../App/models/Book.php';
 
 class BookController {
     
-    // výchozí metoda pro zobrazení úvodní stránky
+    // výchozí metoda pro zobrazení úvodní stránky//
     public function index(){
         require_once '../App/views/books/book_list.php';
     }

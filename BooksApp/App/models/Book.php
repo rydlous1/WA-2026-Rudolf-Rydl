@@ -3,7 +3,7 @@
 class Book {
     private $conn;
 
-    // Přijme existující připojení z Database.php
+    // Přijme existující připojení z Database.php //
     public function __construct($db) {
         $this->conn = $db;
     }
