@@ -1,0 +1,27 @@
+<?php
+
+session_start();
+
+
+
+ini_set('display_errors', 1);
+
+ini_set('display_startup_errors', 1);
+
+error_reporting(E_ALL);
+
+
+
+$baseDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
+
+define('BASE_URL', $baseDir);
+
+
+
+// echo($baseDir); // Tohle jsme smazali, aby to nehyzdilo web
+
+
+
+require_once '../core/App.php';
+
+$app = new App();

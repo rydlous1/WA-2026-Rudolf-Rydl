@@ -22,17 +22,25 @@ class BookController {
 
 
     // 1. Zobrazení formuláře pro přidání nové knihy
-    public function create() {
-        // !!! ZMĚNA: Autorizace: Pokud uživatel není přihlášen, nemá tu co dělat
-        if (!isset($_SESSION['user_id'])) {
-            $this->addErrorMessage('Pro přidání knihy se musíte nejprve přihlásit.');
-            header('Location: ' . BASE_URL . '/index.php?url=auth/login');
-            exit;
-        }
+   public function create() {
+        // ... (případná kontrola přihlášení) ...
+
+        require_once '../App/models/Database.php';
+        require_once '../App/models/Category.php'; // Načtení nového modelu
+
+        $database = new Database();
+        $db = $database->getConnection();
+
+        // Získání seznamu kategorií
+        $categoryModel = new Category($db);
+        $categories = $categoryModel->getAllCategories();
+
+        // Předání do šablony
+        require_once '../App/views/books/book_create.php';
+    
         
         
-        // Zde se pouze načte (vloží) připravený soubor s HTML formulářem
-        require_once '../app/views/books/book_create.php';
+        
     }
 
     // 2. Zpracování dat odeslaných z formuláře
