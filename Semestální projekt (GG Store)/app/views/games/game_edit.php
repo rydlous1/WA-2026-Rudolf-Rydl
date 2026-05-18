@@ -1,137 +1,83 @@
 <?php
-/** @var array $game Toto říká editoru, že $game je pole a existuje */
-/** @var array $comments A tohle platí pro komentáře */
+/** @var array $game */
+/** @var array $comments */
+ /** @var array $categories */
 
 require_once '../app/views/layout/header.php'; 
 ?>  
-
-    <main class="container mx-auto px-6 py-10 flex-grow">
-        
-        <div class="max-w-3xl mx-auto">
-            <div class="mb-6 flex items-center justify-between">
-                <div>
-                    <h2 class="text-3xl font-light tracking-widest text-slate-200 uppercase">
-                        Upravit hru <span class="text-emerald-400 font-medium ml-2">#<?= htmlspecialchars($game['id']) ?></span>
-                    </h2>
-                    <p class="text-slate-200 italic mt-1 text-sm">Upravujete data pro hru: <strong class="text-slate-300"><?= htmlspecialchars($game['title']) ?></strong></p>
-                </div>
-                <a href="<?= BASE_URL ?>/index.php" class="text-slate-100 hover:text-white transition-colors text-sm uppercase tracking-wider">&larr; Zpět</a>
-            </div>
-            
-            <div class="bg-slate-800/50 border border-slate-400 rounded-xl shadow-2xl backdrop-blur-sm p-6 md:p-8">
-                <!-- ZMĚNA: url=game/update -->
-                <form action="<?= BASE_URL ?>/index.php?url=game/update/<?= htmlspecialchars($game['id']) ?>" method="post" enctype="multipart/form-data">
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        
-                        <div>
-                            <label for="id_display" class="block text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wider">ID v databázi</label>
-                            <input type="text" id="id_display" value="<?= htmlspecialchars($game['id']) ?>" readonly 
-                                   class="w-full bg-slate-900/80 border border-slate-700 rounded-md px-4 py-2 text-slate-500 cursor-not-allowed">
-                        </div>
-
-                        <div>
-                            <label for="title" class="block text-xs font-semibold text-slate-100 mb-1 uppercase tracking-wider">Název hry <span class="text-rose-500">*</span></label>
-                            <input type="text" id="title" name="title" value="<?= htmlspecialchars($game['title']) ?>" required 
-                                   class="w-full bg-slate-900/50 border border-slate-400 rounded-md px-4 py-2 text-emerald-100 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors">
-                        </div>
-                        
-                        <div>
-                            <label for="developer" class="block text-xs font-semibold text-slate-100 mb-1 uppercase tracking-wider">Vývojář <span class="text-rose-500">*</span></label>
-                            <input type="text" id="developer" name="developer" value="<?= htmlspecialchars($game['developer']) ?>" required 
-                                   class="w-full bg-slate-900/50 border border-slate-400 rounded-md px-4 py-2 text-slate-200 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors">
-                        </div>
-                        
-                        <div>
-                            <label for="publisher" class="block text-xs font-semibold text-slate-100 mb-1 uppercase tracking-wider">Vydavatel</label>
-                            <input type="text" id="publisher" name="publisher" value="<?= htmlspecialchars($game['publisher']) ?>" 
-                                   class="w-full bg-slate-900/50 border border-slate-400 rounded-md px-4 py-2 text-slate-200 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors">
-                        </div>
-
-                        <div>
-                            <label for="release_year" class="block text-xs font-semibold text-slate-100 mb-1 uppercase tracking-wider">Rok vydání <span class="text-rose-500">*</span></label>
-                            <input type="number" id="release_year" name="release_year" value="<?= htmlspecialchars($game['release_year']) ?>" required 
-                                   class="w-full bg-slate-900/50 border border-slate-400 rounded-md px-4 py-2 text-slate-200 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors">
-                        </div>
-                        
-                        <!-- ZMĚNA: Select box změněn na textový input s předvyplněnou hodnotou -->
-                        <div>
-                            <label for="genre" class="block text-xs font-semibold text-slate-100 mb-1 uppercase tracking-wider">Žánr <span class="text-rose-500">*</span></label>
-                            <input type="text" id="genre" name="genre" value="<?= htmlspecialchars($game['genre']) ?>" required 
-                                   class="w-full bg-slate-900/50 border border-slate-400 rounded-md px-4 py-2 text-slate-200 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors">
-                        </div>
-                        
-                        <div>
-                            <label for="platform" class="block text-xs font-semibold text-slate-100 mb-1 uppercase tracking-wider">Platforma</label>
-                            <input type="text" id="platform" name="platform" value="<?= htmlspecialchars($game['platform']) ?>" 
-                                   class="w-full bg-slate-900/50 border border-slate-400 rounded-md px-4 py-2 text-slate-200 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors">
-                        </div>
-                        
-                        <div>
-                            <label for="price" class="block text-xs font-semibold text-slate-100 mb-1 uppercase tracking-wider">Cena hry (Kč)</label>
-                            <input type="number" id="price" name="price" step="0.5" value="<?= htmlspecialchars($game['price']) ?>" 
-                                   class="w-full bg-slate-900/50 border border-slate-400 rounded-md px-4 py-2 text-slate-200 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors">
-                        </div>
-                        
-                        <div>
-                            <label for="link" class="block text-xs font-semibold text-slate-100 mb-1 uppercase tracking-wider">Odkaz</label>
-                            <input type="text" id="link" name="link" value="<?= htmlspecialchars($game['link']) ?>" 
-                                   class="w-full bg-slate-900/50 border border-slate-400 rounded-md px-4 py-2 text-slate-200 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors">
-                        </div>
-                        
-                        <div class="md:col-span-2">
-                            <label for="description" class="block text-xs font-semibold text-slate-100 mb-1 uppercase tracking-wider">Popis hry</label>
-                            <textarea id="description" name="description" rows="5" 
-                                      class="w-full bg-slate-900/50 border border-slate-400 rounded-md px-4 py-2 text-slate-200 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors"><?= htmlspecialchars($game['description']) ?></textarea>
-                        </div>    
-                        
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-semibold text-slate-100 mb-2 uppercase tracking-wider">Obrázky hry (přidat nové)</label>
-                            <div class="w-full">
-                                <label for="images" class="flex flex-col items-center justify-center w-full h-24 border-2 border-slate-400 border-dashed rounded-lg cursor-pointer bg-slate-800/30 hover:bg-slate-700/50 hover:border-emerald-400 transition-colors">
-                                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                        <span id="file-title" class="text-sm text-slate-100 font-semibold">Klikni pro výběr souborů</span>
-                                        <span id="file-info" class="text-xs text-slate-500 mt-1 text-center px-4">Žádné soubory nebyly vybrány</span>
-                                    </div>
-                                    <input type="file" id="images" name="images[]" multiple accept="image/*" class="hidden">
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="md:col-span-2 mt-4">
-                            <button type="submit" 
-                                    class="w-full bg-gradient-to-r from-emerald-600 to-emerald-800 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold py-3 px-4 rounded-md shadow-lg border border-emerald-500 transition-all uppercase tracking-widest text-sm">
-                                Uložit změny do DB
-                            </button>
-                        </div>
-
-                    </div>
-                </form>
+<main class="container mx-auto px-6 py-6 flex-grow flex items-center justify-center">
+    <div class="w-full max-w-5xl">
+        <div class="mb-4 flex justify-between items-end border-b border-white/10 pb-2">
+            <h2 class="text-3xl font-black text-white italic uppercase tracking-tighter">Upravit záznam <span class="text-[#C44DFF]">#<?= htmlspecialchars($game['id']) ?></span></h2>
+            <div class="flex items-center gap-4">
+                <span class="text-slate-500 text-xs italic truncate max-w-[200px]"><?= htmlspecialchars($game['title']) ?></span>
+                <a href="<?= BASE_URL ?>/index.php" class="text-slate-500 hover:text-white text-xs uppercase tracking-widest font-bold transition-colors">&larr; ZPĚT</a>
             </div>
         </div>
-        <script>
-            const fileInput = document.getElementById('images');
-            const fileTitle = document.getElementById('file-title');
-            const fileInfo = document.getElementById('file-info');
+        
+        <div class="bg-[#1A122E]/80 border border-white/10 rounded-2xl p-8 backdrop-blur-xl shadow-2xl">
+            <form action="<?= BASE_URL ?>/index.php?url=game/update/<?= $game['id'] ?>" method="post" enctype="multipart/form-data">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-5">
+                    
+                    <div class="md:col-span-2">
+                        <label class="block text-[10px] font-black text-[#C44DFF] uppercase tracking-[0.2em] mb-1">Název hry *</label>
+                        <input type="text" name="title" value="<?= htmlspecialchars($game['title']) ?>" required class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-white outline-none focus:border-[#C44DFF] transition-all">
+                    </div>
 
-            fileInput.addEventListener('change', function(event) {
-                const files = event.target.files;
-                
-                if (files.length === 0) {
-                    fileTitle.textContent = 'Klikněte pro výběr souborů';
-                    fileTitle.className = 'text-sm text-slate-100 font-semibold';
-                    fileInfo.textContent = 'Žádné soubory nebyly vybrány';
-                } else if (files.length === 1) {
-                    fileTitle.textContent = 'Soubor připraven';
-                    fileTitle.className = 'text-sm text-emerald-400 font-bold';
-                    fileInfo.textContent = files[0].name;
-                } else {
-                    fileTitle.textContent = 'Soubory připraveny';
-                    fileTitle.className = 'text-sm text-emerald-400 font-bold';
-                    fileInfo.textContent = 'Vybráno celkem: ' + files.length + ' souborů';
-                }
-            });
-        </script>
-    </main>
+                    <div>
+                        <label class="block text-[10px] font-black text-[#C44DFF] uppercase tracking-[0.2em] mb-1">Kategorie *</label>
+                        <select name="category_id" required class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-white outline-none focus:border-[#C44DFF] transition-all cursor-pointer">
+                            <?php foreach($categories as $cat): ?>
+                                <option value="<?= htmlspecialchars($cat['id']) ?>" <?= $game['category_id'] == $cat['id'] ? 'selected' : '' ?> class="bg-[#1A122E]">
+                                    <?= htmlspecialchars($cat['name']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
 
+                    <div>
+                        <label class="block text-[10px] font-black text-[#C44DFF] uppercase tracking-[0.2em] mb-1">Vývojář *</label>
+                        <input type="text" name="developer" value="<?= htmlspecialchars($game['developer']) ?>" required class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-white outline-none focus:border-[#C44DFF]">
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-black text-[#C44DFF] uppercase tracking-[0.2em] mb-1">Vydavatel</label>
+                        <input type="text" name="publisher" value="<?= htmlspecialchars($game['publisher']) ?>" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-white outline-none focus:border-[#C44DFF]">
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-black text-[#C44DFF] uppercase tracking-[0.2em] mb-1">Rok vydání *</label>
+                        <input type="number" name="release_year" value="<?= htmlspecialchars($game['release_year']) ?>" required class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-white outline-none focus:border-[#C44DFF]">
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-black text-[#C44DFF] uppercase tracking-[0.2em] mb-1">Platforma</label>
+                        <input type="text" name="platform" value="<?= htmlspecialchars($game['platform']) ?>" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-white outline-none focus:border-[#C44DFF]">
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-black text-[#C44DFF] uppercase tracking-[0.2em] mb-1">Cena (Kč)</label>
+                        <input type="number" name="price" step="0.01" value="<?= htmlspecialchars($game['price']) ?>" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-white outline-none focus:border-[#C44DFF]">
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-black text-[#C44DFF] uppercase tracking-[0.2em] mb-1">Odkaz (Steam/Epic)</label>
+                        <input type="text" name="link" value="<?= htmlspecialchars($game['link']) ?>" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-white outline-none focus:border-[#C44DFF]">
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-[10px] font-black text-[#C44DFF] uppercase tracking-[0.2em] mb-1">Popis hry</label>
+                        <textarea name="description" rows="3" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#C44DFF] transition-all"><?= htmlspecialchars($game['description']) ?></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-black text-[#C44DFF] uppercase tracking-[0.2em] mb-1">Změnit obrázek</label>
+                        <input type="file" name="images[]" multiple accept="image/*" class="text-[10px] text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-[#C44DFF] file:text-black file:font-black file:uppercase file:cursor-pointer">
+                    </div>
+                </div>
+                <button type="submit" class="w-full mt-8 bg-[#C44DFF] hover:bg-[#d170ff] text-black font-black py-4 rounded-xl uppercase tracking-widest transition-all shadow-lg shadow-[#C44DFF]/20 active:scale-95">ULOŽIT PROVEDENÉ ÚPRAVY</button>
+            </form>
+        </div>
+    </div>
+</main>
 <?php require_once '../app/views/layout/footer.php'; ?>

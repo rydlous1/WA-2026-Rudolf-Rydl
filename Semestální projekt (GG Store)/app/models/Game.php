@@ -10,7 +10,7 @@ class Game {
     public function create(
         string $title,
         string $developer,
-        string $genre,
+        int $category_id, // Změna: Teď přijímáme ID kategorie (číslo)
         string $platform,
         int $release_year,
         float $price,
@@ -20,8 +20,9 @@ class Game {
         array $images,
         int $userId
     ): bool {
-        $sql = "INSERT INTO games (title, developer, genre, platform, release_year, price, publisher, description, link, images, created_by)
-                VALUES (:title, :developer, :genre, :platform, :release_year, :price, :publisher, :description, :link, :images, :created_by)";
+        // Změna v INSERTu: ukládáme do sloupce category_id
+        $sql = "INSERT INTO games (title, developer, category_id, platform, release_year, price, publisher, description, link, images, created_by)
+                VALUES (:title, :developer, :category_id, :platform, :release_year, :price, :publisher, :description, :link, :images, :created_by)";
         
         $stmt = $this->db->prepare($sql);
 
@@ -31,7 +32,7 @@ class Game {
         return $stmt->execute([
             ':title' => $title,
             ':developer' => $developer,
-            ':genre' => $genre,
+            ':category_id' => $category_id, // Navázáno na ID
             ':platform' => $platform ?: null,
             ':release_year' => $release_year,
             ':price' => $price,
@@ -44,21 +45,29 @@ class Game {
     }
 
     public function getAll() {
-        $sql = "SELECT * FROM games ORDER BY id DESC";
+        // 💡 ZMĚNA: SQL JOIN na tabulku categories, abychom místo ID měli název kategorie
+        $sql = "SELECT games.*, categories.name AS category_name 
+                FROM games 
+                LEFT JOIN categories ON games.category_id = categories.id 
+                ORDER BY games.id DESC";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getById($id) {
-        $sql = "SELECT * FROM games WHERE id = :id";
+        // 💡 ZMĚNA: SQL JOIN přidán i pro detail hry
+        $sql = "SELECT games.*, categories.name AS category_name 
+                FROM games 
+                LEFT JOIN categories ON games.category_id = categories.id 
+                WHERE games.id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([':id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function update(
-        $id, $title, $developer, $genre, $platform, 
+        $id, $title, $developer, $category_id, $platform, // Změna: Teď přijímáme ID kategorie (číslo)
         $release_year, $price, $publisher, $description, $link, $images = []
     ) {
         // Zjistíme, jestli přišel nějaký nový obrázek
@@ -70,7 +79,7 @@ class Game {
             $sql = "UPDATE games 
                     SET title = :title, 
                         developer = :developer, 
-                        genre = :genre, 
+                        category_id = :category_id, -- Změna: ukládáme category_id
                         platform = :platform, 
                         release_year = :release_year, 
                         price = :price, 
@@ -81,11 +90,10 @@ class Game {
                     WHERE id = :id";
         } else {
             // VARIANTA B: Uživatel nevybral nový obrázek -> sloupec 'images' úplně vynecháme!
-            // Tím pádem se v databázi starý obrázek nepřemaže.
             $sql = "UPDATE games 
                     SET title = :title, 
                         developer = :developer, 
-                        genre = :genre, 
+                        category_id = :category_id, -- Změna: ukládáme category_id
                         platform = :platform, 
                         release_year = :release_year, 
                         price = :price, 
@@ -102,7 +110,7 @@ class Game {
             ':id' => $id,
             ':title' => $title,
             ':developer' => $developer,
-            ':genre' => $genre,
+            ':category_id' => $category_id, // Navázáno na ID
             ':platform' => $platform ?: null,
             ':release_year' => $release_year,
             ':price' => $price,

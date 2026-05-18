@@ -1,42 +1,45 @@
 <?php require_once '../app/views/layout/header.php'; ?>
 
-<main class="container mx-auto px-6 py-10 flex-grow flex items-center justify-center">
+<main class="container mx-auto px-6 flex-grow flex items-center justify-center py-4">
     <div class="w-full max-w-md">
         <div class="mb-6 text-center">
-            <h2 class="text-3xl font-light tracking-widest text-slate-200 uppercase">Přihlášení</h2>
-            <p class="text-slate-200 italic mt-2 text-sm">Vítejte zpět v naší Knihovně.</p>
+            <h2 class="text-3xl font-black text-white italic uppercase tracking-tighter">Login <span class="text-[#C44DFF]">Area</span></h2>
         </div>
         
-        <div class="bg-slate-800/50 border border-slate-700 rounded-xl shadow-2xl backdrop-blur-sm p-6 md:p-8">
-            <form action="<?= BASE_URL ?>/index.php?url=auth/authenticate" method="post">
-                
-                <div class="space-y-6">
-                    <div>
-                        <label for="email" class="block text-xs font-semibold text-slate-100 mb-1 uppercase tracking-wider">E-mail</label>
-                        <input type="email" id="email" name="email" required autofocus
-                               class="w-full bg-slate-900/50 border border-slate-400 rounded-md px-4 py-2 text-slate-200 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors">
-                    </div>
-
-                    <div>
-                        <label for="password" class="block text-xs font-semibold text-slate-100 mb-1 uppercase tracking-wider">Heslo</label>
-                        <input type="password" id="password" name="password" required 
-                               class="w-full bg-slate-900/50 border border-slate-400 rounded-md px-4 py-2 text-slate-200 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors">
-                    </div>
-
-                    <div class="pt-2">
-                        <button type="submit" 
-                                class="w-full bg-gradient-to-r from-emerald-600 to-emerald-800 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold py-3 px-4 rounded-md shadow-lg border border-emerald-500 transition-all uppercase tracking-widest text-sm">
-                            Přihlásit se
-                        </button>
-                    </div>
-                    
-                    <p class="text-center text-slate-500 text-sm border-t border-slate-700 pt-4">
-                        Nemáte ještě účet? <a href="<?= BASE_URL ?>/index.php?url=auth/register" class="text-emerald-400 hover:text-white transition-colors">Zaregistrujte se</a>.
-                    </p>
+        <div class="bg-[#1A122E]/80 border border-white/10 rounded-2xl p-8 backdrop-blur-xl shadow-2xl">
+            <form action="<?= BASE_URL ?>/index.php?url=auth/authenticate" method="post" class="space-y-5">
+                <div>
+                    <label class="block text-[10px] font-black text-[#C44DFF] uppercase tracking-widest mb-1">E-mail</label>
+                    <input type="email" name="email" required autofocus
+                           class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-white outline-none focus:border-[#C44DFF] transition-all">
                 </div>
+
+                <div>
+                    <label class="block text-[10px] font-black text-[#C44DFF] uppercase tracking-widest mb-1">Heslo</label>
+                    <div class="relative">
+                        <input type="password" id="login_pass" name="password" required 
+                               class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-white outline-none focus:border-[#C44DFF] transition-all">
+                        <button type="button" onclick="togglePass('login_pass')" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-[#C44DFF] transition-colors">👁️</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-[#C44DFF] hover:bg-[#d170ff] text-black font-black py-3 rounded-lg uppercase tracking-widest shadow-lg transition-all active:scale-95">
+                    Vstoupit do obchodu
+                </button>
+                
+                <p class="text-center text-slate-500 text-xs pt-2">
+                    Nováček? <a href="<?= BASE_URL ?>/index.php?url=auth/register" class="text-[#C44DFF] hover:underline">Založ si účet</a>
+                </p>
             </form>
         </div>
     </div>
 </main>
+
+<script>
+function togglePass(id) {
+    const x = document.getElementById(id);
+    x.type = x.type === "password" ? "text" : "password";
+}
+</script>
 
 <?php require_once '../app/views/layout/footer.php'; ?>
