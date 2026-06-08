@@ -2,11 +2,10 @@
 /** @var array $game */
 /** @var array $comments */
 require_once '../app/views/layout/header.php'; 
-?>  
+?> 
 
 <main class="container mx-auto px-6 py-10 flex-grow relative z-10">
     <div class="max-w-5xl mx-auto">
-        
         <div class="mb-6 flex justify-between items-center">
             <a href="<?= BASE_URL ?>/index.php" class="text-blue-400 hover:text-white transition-colors text-sm uppercase tracking-wider font-bold">&larr; Zpět na seznam</a>
             <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
@@ -16,7 +15,6 @@ require_once '../app/views/layout/header.php';
 
         <div class="bg-slate-800/50 border border-slate-700 rounded-2xl p-8 shadow-2xl mb-10 backdrop-blur-md">
             <div class="flex flex-col md:flex-row gap-10">
-                
                 <div class="w-full md:w-1/3">
                     <?php 
                         $imageValue = $game['images'] ?? '';
@@ -40,7 +38,6 @@ require_once '../app/views/layout/header.php';
                     <p class="text-2xl text-emerald-400 font-bold mb-8 italic">
                         <?= number_format($game['price'] ?? 0, 0, ',', ' ') ?> Kč
                     </p>
-
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10 border-t border-slate-700/50 pt-6">
                         <div>
                             <span class="block text-slate-500 uppercase tracking-tighter text-[10px] font-bold mb-1">Vývojář</span>
@@ -59,14 +56,12 @@ require_once '../app/views/layout/header.php';
                             <span class="text-slate-200"><?= htmlspecialchars($game['release_year'] ?? '-') ?></span>
                         </div>
                     </div>
-
                     <div class="mb-10">
                         <span class="block text-slate-500 uppercase tracking-tighter text-[10px] font-bold mb-3">O hře</span>
                         <p class="text-slate-300 leading-relaxed text-sm">
                             <?= nl2br(htmlspecialchars($game['description'] ?? 'Popis hry není k dispozici.')) ?>
                         </p>
                     </div>
-
                     <?php if (!empty($game['link'])): ?>
                         <a href="<?= htmlspecialchars($game['link']) ?>" target="_blank" class="inline-block bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-3 rounded-xl shadow-lg transition-all uppercase text-xs tracking-widest">Koupit hru</a>
                     <?php endif; ?>
@@ -100,12 +95,28 @@ require_once '../app/views/layout/header.php';
                             </div>
                             <p class="text-slate-300 text-sm leading-relaxed"><?= nl2br(htmlspecialchars($comment['content'])) ?></p>
                             
-                            <?php if (isset($_SESSION['user_id']) && ($_SESSION['user_id'] === $comment['user_id'] || ($_SESSION['role'] ?? '') === 'admin')): ?>
-                                <div class="mt-4 flex justify-end">
-                                    <a href="<?= BASE_URL ?>/index.php?url=game/deleteComment/<?= $comment['id'] ?>/<?= $game['id'] ?>" 
-                                       class="text-[10px] text-rose-500 hover:text-rose-400 font-bold uppercase tracking-widest" 
-                                       onclick="return confirm('Smazat komentář?');">Odstranit</a>
+                            <?php if (isset($_SESSION['user_id'])): ?>
+                                <div class="mt-4 flex gap-4 justify-end">
+                                    <?php if ($_SESSION['user_id'] === $comment['user_id']): ?>
+                                        <button onclick="document.getElementById('edit-form-<?= $comment['id'] ?>').classList.toggle('hidden')" 
+                                                class="text-[10px] text-blue-500 hover:text-blue-300 font-bold uppercase tracking-widest transition-colors">Upravit</button>
+                                    <?php endif; ?>
+                                    
+                                    <?php if ($_SESSION['user_id'] === $comment['user_id'] || ($_SESSION['role'] ?? '') === 'admin'): ?>
+                                        <a href="<?= BASE_URL ?>/index.php?url=game/deleteComment/<?= $comment['id'] ?>/<?= $game['id'] ?>" 
+                                           class="text-[10px] text-rose-500 hover:text-rose-400 font-bold uppercase tracking-widest transition-colors" 
+                                           onclick="return confirm('Smazat komentář?');">Odstranit</a>
+                                    <?php endif; ?>
                                 </div>
+
+                                <?php if ($_SESSION['user_id'] === $comment['user_id']): ?>
+                                    <form id="edit-form-<?= $comment['id'] ?>" action="<?= BASE_URL ?>/index.php?url=game/editComment/<?= $comment['id'] ?>/<?= $game['id'] ?>" method="POST" class="hidden mt-4 bg-slate-800 p-4 rounded-xl border border-slate-700">
+                                        <textarea name="content" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white text-sm focus:outline-none focus:border-blue-500" rows="3"><?= htmlspecialchars($comment['content']) ?></textarea>
+                                        <div class="flex justify-end mt-2">
+                                            <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-1.5 rounded text-[10px] font-bold uppercase tracking-widest transition-all">Uložit změny</button>
+                                        </div>
+                                    </form>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </div>
                     <?php endforeach; ?>

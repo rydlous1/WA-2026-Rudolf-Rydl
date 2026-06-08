@@ -17,14 +17,11 @@ class GameController {
             header('Location: ' . BASE_URL . '/index.php?url=auth/login');
             exit;
         }
-        
-        // Načtení kategorií pro Select ve formuláři
         require_once '../app/models/Database.php';
         require_once '../app/models/Category.php';
         $db = (new Database())->getConnection();
         $categoryModel = new Category($db);
         $categories = $categoryModel->getAll();
-
         require_once '../app/views/games/game_create.php';
     }
 
@@ -35,7 +32,7 @@ class GameController {
             $title = $_POST['title'] ?? ''; 
             $developer = $_POST['developer'] ?? '';
             $publisher = $_POST['publisher'] ?? '';
-            $category_id = (int)($_POST['category_id'] ?? 0); // Změna: Čekáme číslo
+            $category_id = (int)($_POST['category_id'] ?? 0);
             $platform = $_POST['platform'] ?? '';
             $release_year = (int)($_POST['release_year'] ?? 0);
             $price = (float)($_POST['price'] ?? 0);
@@ -63,15 +60,12 @@ class GameController {
         }
         require_once '../app/models/Database.php';
         require_once '../app/models/Game.php';
-        require_once '../app/models/Category.php'; // Načtení modelu
-        
+        require_once '../app/models/Category.php';
         $db = (new Database())->getConnection();
         $gameModel = new Game($db);
         $game = $gameModel->getById($id);
-
         $categoryModel = new Category($db);
-        $categories = $categoryModel->getAll(); // Data pro Select
-
+        $categories = $categoryModel->getAll();
         require_once '../app/views/games/game_edit.php';
     }
 
@@ -86,7 +80,7 @@ class GameController {
             $title = $_POST['title'] ?? '';
             $developer = $_POST['developer'] ?? '';
             $publisher = $_POST['publisher'] ?? '';
-            $category_id = (int)($_POST['category_id'] ?? 0); // Změna: Čekáme číslo
+            $category_id = (int)($_POST['category_id'] ?? 0);
             $platform = $_POST['platform'] ?? '';
             $release_year = (int)($_POST['release_year'] ?? 0);
             $price = (float)($_POST['price'] ?? 0);
@@ -127,6 +121,22 @@ class GameController {
             if ($stmt->execute([':game_id' => $game_id, ':user_id' => $_SESSION['user_id'], ':content' => $content])) {
                 $this->addSuccessMessage('Komentář přidán.');
             }
+        }
+        header('Location: ' . BASE_URL . '/index.php?url=game/show/' . $game_id);
+        exit;
+    }
+
+    public function editComment($comment_id = null, $game_id = null) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $comment_id && isset($_SESSION['user_id'])) {
+            $content = htmlspecialchars($_POST['content'] ?? '');
+            require_once '../app/models/Database.php';
+            $db = (new Database())->getConnection();
+            
+            // Úprava pouze pro autora (i pokud je admin, musí být autorem)
+            $stmt = $db->prepare("UPDATE comments SET content = :content WHERE id = :id AND user_id = :user_id");
+            $stmt->execute([':content' => $content, ':id' => $comment_id, ':user_id' => $_SESSION['user_id']]);
+            
+            $this->addSuccessMessage('Komentář byl upraven.');
         }
         header('Location: ' . BASE_URL . '/index.php?url=game/show/' . $game_id);
         exit;
