@@ -17,7 +17,7 @@
         </div>
         
         <div>
-            <!-- Akce upravena na game/store -->
+            
             <form action="<?= BASE_URL ?>/index.php?url=game/store" method="post" enctype="multipart/form-data">
                 <div>
                     <div>

@@ -7,7 +7,7 @@ class User {
         $this->db = $db;    
     }
 
-    // 1. Registrace (Zůstává stejné, jen pro jistotu)
+    // 1. Registrace 
     public function register(string $username, string $email, string $password, ?string $firstName = null, ?string $lastName = null, ?string $nickname = null): bool {
         if ($this->findByEmail($email)) {
             return false; 
@@ -46,7 +46,7 @@ class User {
 
     // 4. Seznam VŠECH uživatelů - OPRAVENO: Přidány sloupce pro jméno a příjmení
     public function getAll() {
-        // Přidali jsme first_name a last_name, aby se v tabulce adminovi nezobrazovaly chyby
+        // first_name a last_name, aby se v tabulce adminovi nezobrazovaly chyby
         $sql = "SELECT id, username, email, first_name, last_name, role, created_at FROM users ORDER BY id DESC";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();

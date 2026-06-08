@@ -17,7 +17,7 @@
         <div class="container mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center relative">
             
             <a href="<?= BASE_URL ?>/index.php" class="transition-transform hover:scale-105 active:scale-95 drop-shadow-[0_0_15px_rgba(196,77,255,0.3)]">
-                <!-- Zkontroluj si, že máš logo opravdu ve složce images/logo.png podle tvého původního kódu -->
+                
                 <img src="<?= BASE_URL ?>/images/logo.png" alt="GG STORE" class="h-20 md:h-24 w-auto object-contain">
             </a>
             

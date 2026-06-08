@@ -10,7 +10,7 @@ class Game {
     public function create(
         string $title,
         string $developer,
-        int $category_id, // Změna: Teď přijímáme ID kategorie (číslo)
+        int $category_id, 
         string $platform,
         int $release_year,
         float $price,
@@ -20,7 +20,7 @@ class Game {
         array $images,
         int $userId
     ): bool {
-        // Změna v INSERTu: ukládáme do sloupce category_id
+        
         $sql = "INSERT INTO games (title, developer, category_id, platform, release_year, price, publisher, description, link, images, created_by)
                 VALUES (:title, :developer, :category_id, :platform, :release_year, :price, :publisher, :description, :link, :images, :created_by)";
         

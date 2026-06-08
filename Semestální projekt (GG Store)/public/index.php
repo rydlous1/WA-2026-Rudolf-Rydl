@@ -18,7 +18,7 @@ define('BASE_URL', $baseDir);
 
 
 
-// echo($baseDir); // Tohle jsme smazali, aby to nehyzdilo web
+// echo($baseDir); jsem dostranil(vypadá lépe bez)
 
 
 
